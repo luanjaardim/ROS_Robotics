@@ -1,14 +1,4 @@
 <launch>
-    <node name="encoder_left" pkg="drivers"
-        type="encoder.py" output="screen">
-        <param name="CH1" value="27"/>
-        <param name="CH2" value="17"/>
-        <remap from="wheel_speed" to="wheel_speed_l"/>
-    </node>
-    <node name="encoder_right" pkg="drivers"
-        type="encoder.py" output="screen">
-        <param name="CH1" value="23"/>
-        <param name="CH2" value="24"/>
-        <remap from="wheel_speed" to="wheel_speed_r"/>
-    </node>
+    <node name="base_controller_node" pkg="drivers"
+        type="base_controller.py" output="screen"/>
 </launch>
