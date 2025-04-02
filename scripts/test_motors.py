@@ -5,7 +5,7 @@ import os
 #   linear: {x: 0.0, y: 0.0, z: 0.0}
 #  angular: {x: 0.0, y: 0.0, z: 1.0}"
 
-rostopic pub /cmd_vel geometry_msgs/Twist "{linear: {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 100.0}}" -r 5
+#rostopic pub /cmd_vel geometry_msgs/Twist "{linear: {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 100.0}}" -r 5
 
 
 while True:
