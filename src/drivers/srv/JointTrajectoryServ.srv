@@ -1,0 +1,3 @@
+trajectory_msgs/JointTrajectory Content
+---
+std_msgs/Int32 Exit
