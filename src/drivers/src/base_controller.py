@@ -200,7 +200,7 @@ class BaseController:
     def run(self):
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():
-            rospy.loginfo(f"\nReal Speeds: {self.current_left_speed} - {self.current_right_speed}, \nTarget Speeds: {self.desired_speed_left} - {self.desired_speed_right}")
+            # rospy.loginfo(f"\nReal Speeds: {self.current_left_speed} - {self.current_right_speed}, \nTarget Speeds: {self.desired_speed_left} - {self.desired_speed_right}")
 
             self.motors.run(MotorsEnum.LEFT, self.pid_left)
             self.motors.run(MotorsEnum.RIGHT, self.pid_right)

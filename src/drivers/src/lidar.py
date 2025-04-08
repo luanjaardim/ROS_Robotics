@@ -27,8 +27,8 @@ def salvar_imagem_lidar(scan_msg, contador):
     plt.grid(True)
 
     # Define os limites dos eixos para uma escala fixa de 6x6 metros
-    plt.xlim(-8, 8)
-    plt.ylim(-8, 8)
+    plt.xlim(-1.5, 1.5)
+    plt.ylim(-1.5, 1.5)
 
     # Salva a imagem com um nome sequencial
     nome_arquivo = f'lidar_frame.png'
@@ -56,8 +56,8 @@ class YDLidarNode:
         self.laser.setlidaropt(ydlidar.LidarPropScanFrequency, 10.0)
         self.laser.setlidaropt(ydlidar.LidarPropSampleRate, 1)
         self.laser.setlidaropt(ydlidar.LidarPropSingleChannel, False)
-        self.laser.setlidaropt(ydlidar.LidarPropMaxAngle, 180.0)
-        self.laser.setlidaropt(ydlidar.LidarPropMinAngle, -180.0)
+        self.laser.setlidaropt(ydlidar.LidarPropMaxAngle, 150.0)
+        self.laser.setlidaropt(ydlidar.LidarPropMinAngle, -210.0)
         self.laser.setlidaropt(ydlidar.LidarPropMaxRange, 16.0)
         self.laser.setlidaropt(ydlidar.LidarPropMinRange, 0.28)
         self.laser.setlidaropt(ydlidar.LidarPropIntenstiy, False)
@@ -80,8 +80,8 @@ class YDLidarNode:
             scan_msg.header.stamp = rospy.Time.now()
             scan_msg.header.frame_id = "laser_frame"
             
-            scan_msg.angle_min = scan.config.min_angle - (np.pi / 6)
-            scan_msg.angle_max = scan.config.max_angle - (np.pi / 6)
+            scan_msg.angle_min = scan.config.min_angle + (np.pi / 6)
+            scan_msg.angle_max = scan.config.max_angle + (np.pi / 6)
             scan_msg.angle_increment = scan.config.angle_increment
             scan_msg.scan_time = scan.config.scan_time
             scan_msg.time_increment = scan.config.time_increment
@@ -93,19 +93,22 @@ class YDLidarNode:
             scan_msg.intensities = [0.0] * size
             for point in scan.points:
                 index = int(math.ceil((point.angle - scan.config.min_angle) / scan.config.angle_increment))
-                if index >= 0 and index < size:
+                if (index >= 0 and index < 25 + size // 2) or (index > size - 25 and index < size):
+                # print(f"angle: {abs(point.angle)}, deg: {np.pi / 2}, is_true: {abs(point.angle) < np.pi / 2}")
+                # if index >= 0 and index < size and abs(point.angle) < np.pi / 2:
                     if point.range >= scan.config.min_range:
                         scan_msg.ranges[size - index] = point.range
                         scan_msg.intensities[size - index] = point.intensity
             self.scan_pub.publish(scan_msg)
+            # print("size: ", size)
 
-            salvar_imagem_lidar(scan_msg, self.cnt)
+            # salvar_imagem_lidar(scan_msg, self.cnt)
             self.cnt += 1
         else:
             rospy.logwarn("Failed to get Lidar Data")
 
     def run(self):
-        rate = rospy.Rate(1)  # 10 Hz
+        rate = rospy.Rate(4)  # 10 Hz
         while not rospy.is_shutdown():
             self.scan_callback()
             rate.sleep()

@@ -1,0 +1,9 @@
+<launch>
+    
+    <node name="navigation_node" pkg="maze"
+        type="navigation.py" output="screen"/>
+
+    <node name="detector_node" pkg="maze"
+        type="detect_squares.py" />
+
+</launch>

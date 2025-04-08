@@ -60,6 +60,7 @@ add_service_files(
   FILES
   JointTrajectoryServ.srv
   CameraServ.srv
+  DetectDirServ.srv
 )
 
 ## Generate actions in the 'action' folder
